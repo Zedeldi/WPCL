@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # WirelessPCLock.py
 # Copyright (C) 2020  Zack Didcott
 
@@ -16,13 +18,14 @@
 
 import argparse, logging, sys, _thread, time, webbrowser
 from select import select
-from utils import *
 
 ## GTK ##
 import gi
 gi.require_version("Gtk", "3.0")
 gi.require_version("AppIndicator3", "0.1")
 from gi.repository import Gtk, AppIndicator3
+
+from utils import *
 
 class WPCL():
 	def __init__(self, args):
