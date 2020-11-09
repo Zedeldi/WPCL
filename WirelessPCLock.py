@@ -25,30 +25,30 @@ gi.require_version("Gtk", "3.0")
 gi.require_version("AppIndicator3", "0.1")
 from gi.repository import Gtk, AppIndicator3
 
-from utils import *
+from utils import lock, unlock, get_lock_state, get_device
 
 class WPCL():
 	def __init__(self, args):
 		## Configuration ##
-		self.ABOUT_URL="https://github.com/Zedeldi/WPCL"
-		self.RECEIVER_NAME=args.device
-		self.TIMEOUT=args.timeout
+		self.ABOUT_URL = "https://github.com/Zedeldi/WPCL"
+		self.RECEIVER_NAME = args.device
+		self.TIMEOUT = args.timeout
 
-		self.device=getDevice(self.RECEIVER_NAME) # Get device to watch. Returns an evdev.InputDevice
+		self.device = get_device(self.RECEIVER_NAME) # Get device to watch. Returns an evdev.InputDevice
 		if self.device == None: sys.exit(1)
 		self.main()
 
 	def main(self):
 		self.indicator = AppIndicator3.Indicator.new("WirelessPCLock", "lock.svg", AppIndicator3.IndicatorCategory.SYSTEM_SERVICES) # GTK applet
 		self.indicator.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
-		self.indicator.set_menu(self.buildMenu())
-		self.listener=_thread.start_new_thread(self.listen, ()) # Listen for data in a separate thread, to prevent main loop blocking
+		self.indicator.set_menu(self.build_menu())
+		self.listener = _thread.start_new_thread(self.listen, ()) # Listen for data in a separate thread, to prevent main loop blocking
 
-	def buildMenu(self):
+	def build_menu(self):
 		menu = Gtk.Menu()
 		self.enabled = Gtk.CheckMenuItem.new_with_label('Enabled')
 		self.enabled.set_active(True)
-		self.enabled.connect('toggled', self.toggleListen)
+		self.enabled.connect('toggled', self.toggle_listen)
 		menu.append(self.enabled)
 		itemAbout = Gtk.MenuItem.new_with_label('About')
 		itemAbout.connect('activate', self.about)
@@ -65,22 +65,22 @@ class WPCL():
 		try:
 			while True:
 				while self.enabled.get_active():
-					r,w,x=select([self.device],[],[], self.TIMEOUT) # Blocks until data or timeout is reached
+					r, w, x = select([self.device], [], [], self.TIMEOUT) # Blocks until data or timeout is reached
 					if not self.enabled.get_active(): break # In case user disabled during wait
 					if len(r) == 0: # Device inactive, lock
 						logging.debug("Timed out.")
-						if not getLockState(): lock() # Do not lock twice
+						if not get_lock_state(): lock() # Do not lock twice
 					else: # Device is active, unlock
 						logging.debug("Data received.")
-						if getLockState(): unlock()
+						if get_lock_state(): unlock()
 						while self.device.read_one(): logging.debug("Flushing device buffer...") # Flush device buffer
 				time.sleep(1)
 		except OSError as e: # I/O failed
 			logging.error("Lost communication with receiver ({0})".format(e))
-			if not getLockState(): lock()
+			if not get_lock_state(): lock()
 			_thread.interrupt_main() # Sends SIGINT to main thread
 
-	def toggleListen(self, caller):
+	def toggle_listen(self, caller):
 		if self.enabled.get_active():
 			self.indicator.set_icon_full("lock.svg", "Locking enabled.")
 			logging.info("Enabled.")
@@ -121,6 +121,6 @@ if __name__ == '__main__':
 		logging.debug("{0}: {1}".format(arg.title(), value))
 	logging.debug("===================")
 	
-	app=WPCL(args)
+	app = WPCL(args)
 	try: Gtk.main()
 	except KeyboardInterrupt: sys.exit(1)

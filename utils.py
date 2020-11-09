@@ -24,9 +24,9 @@ def unlock():
 	logging.info("Unlocking...")
 	os.system("pkill i3lock")
 
-def getLockState(): return "i3lock" in (p.name() for p in psutil.process_iter())
+def get_lock_state(): return "i3lock" in (p.name() for p in psutil.process_iter())
 
-def getDevice(RECEIVER_NAME):
+def get_device(RECEIVER_NAME):
 	devices = [evdev.InputDevice(path) for path in evdev.list_devices()] # Get list of devices
 	for device in devices:
 		if device.name == RECEIVER_NAME: # Found receiver
