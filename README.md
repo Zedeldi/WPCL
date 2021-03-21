@@ -51,7 +51,7 @@ For reference, a review can be found here: <https://www.dansdata.com/pclock.htm>
 
 ## Configuration
 
-Within utils.py, modify `lock()`, `unlock()`, and `getLockState()` to match your requirements. By default, it uses [i3lock](https://github.com/i3/i3lock) as the screen-locker.
+Within utils.py, modify `lock()`, `unlock()`, and `get_lock_state()` to match your requirements. By default, it uses [i3lock](https://github.com/i3/i3lock) as the screen-locker.
 
 ## How it Works
 
