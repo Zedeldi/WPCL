@@ -1,6 +1,6 @@
 # WPCL
 
-[![GitHub license](https://img.shields.io/github/license/Zedeldi/WPCL?style=flat-square)](https://github.com/Zedeldi/WPCL/blob/master/LICENSE) [![GitHub last commit](https://img.shields.io/github/last-commit/Zedeldi/WPCL?style=flat-square)](https://github.com/Zedeldi/WPCL/commits)
+[![GitHub license](https://img.shields.io/github/license/Zedeldi/WPCL?style=flat-square)](https://github.com/Zedeldi/WPCL/blob/master/LICENSE) [![GitHub last commit](https://img.shields.io/github/last-commit/Zedeldi/WPCL?style=flat-square)](https://github.com/Zedeldi/WPCL/commits) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
 
 A small userspace program to get a USB Wireless PC Lock working on GNU/Linux.
 
