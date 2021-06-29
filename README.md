@@ -46,8 +46,10 @@ For reference, a review can be found here: <https://www.dansdata.com/pclock.htm>
 ## Installation
 
 1. Clone this repo: `git clone https://github.com/Zedeldi/WPCL.git`
-2. Install required Python modules: `pip3 install -r requirements.txt`
-3. Run: `python3 WirelessPCLock.py`
+2. Install build: `pip3 install build`
+3. Build: `python3 -m build`
+4. Install wheel: `pip3 install dist/WPCL-*-py3-none-any.whl`
+5. Run: `WPCL`
 
 ## Configuration
 

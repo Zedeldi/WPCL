@@ -1,19 +1,4 @@
-"""
-utils.py - Copyright (C) 2020  Zack Didcott.
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
-"""
+"""Collection of functions to handle locking and evdev."""
 
 import evdev
 import logging
@@ -21,13 +6,13 @@ import os
 import psutil
 
 
-def lock():
+def lock() -> None:
     """Lock the system."""
     logging.info("Locking...")
     os.system("i3lock")
 
 
-def unlock():
+def unlock() -> None:
     """Unlock the system."""
     logging.info("Unlocking...")
     os.system("pkill i3lock")
@@ -38,12 +23,12 @@ def get_lock_state() -> bool:
     return "i3lock" in (p.name() for p in psutil.process_iter())
 
 
-def get_device(RECEIVER_NAME) -> evdev.InputDevice:
+def get_device(receiver_name: str) -> evdev.InputDevice:
     """Return device with provided name."""
     # Get list of devices
     devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
     for device in devices:
-        if device.name == RECEIVER_NAME:  # Found receiver
+        if device.name == receiver_name:  # Found receiver
             try:
                 device.grab()  # Try to get exclusive access
                 logging.debug("Device grabbed.")
