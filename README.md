@@ -70,11 +70,11 @@ A very simplified bash version, which just watches for input from a character de
 ```shell
 #!/bin/bash
 while true; do
-	if `timeout 3 cat "/dev/input/by-id/usb-13b7_7417-event-joystick" | read -n 1`; then
-		echo "Data received"
-	else
-		echo "Timed out"
-	fi
+    if `timeout 3 cat "/dev/input/by-id/usb-13b7_7417-event-joystick" | read -n 1`; then
+        echo "Data received"
+    else
+        echo "Timed out"
+    fi
 done
 ```
 
